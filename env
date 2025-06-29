@@ -1,9 +1,0 @@
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=Top
-DB_PASSWORD=1234
-DB_NAME=sistema-tutorias
-PORT=3000
-# --- JWT ---
-JWT_SECRET=un_secreto_super_seguro
-JWT_EXPIRES_IN=3600s

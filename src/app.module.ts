@@ -3,10 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsuarioModule } from './users/usuario.module';
+import { AuthModule } from './auth/auth.module';
+import { EstudianteModule } from './estudiante/estudiante.module';
+import { TutorModule } from './tutor/tutor.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ 
+    ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
@@ -17,8 +21,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, 
+      synchronize: true,
     }),
+    UsuarioModule,
+    AuthModule,
+    EstudianteModule,
+    TutorModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
