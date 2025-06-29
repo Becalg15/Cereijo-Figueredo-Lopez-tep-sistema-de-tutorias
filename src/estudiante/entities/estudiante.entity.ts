@@ -13,7 +13,7 @@ export class Estudiante {
   id: number;
 
   @OneToOne(() => Usuario)
-  @JoinColumn({ name: 'id' }) // Clave foranea
+  @JoinColumn({ name: 'id' }) 
   usuario: Usuario;
 
   @Column({ length: 20, unique: true })

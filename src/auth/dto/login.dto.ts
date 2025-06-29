@@ -1,10 +1,10 @@
 import { IsEmail, MinLength, MaxLength } from 'class-validator';
 
 export class LoginDto {
-  @IsEmail({}, { message: 'El correo debe tener un formato válido' })
+  @IsEmail({}, { message: '(FORMATO INVALIDO) El correo debe contener @ y .com' })
   correo: string;
 
-  @MinLength(10, { message: 'La contraseña debe tener al menos 10 caracteres' })
-  @MaxLength(20, { message: 'La contraseña no debe exceder los 20 caracteres' })
+  @MinLength(8, { message: 'La contraseña debe tener MINIMO 8 caracteres' })
+  @MaxLength(15, { message: 'La contraseña debe tener MAXIMO 15 caracteres' })
   contraseña: string;
 }
