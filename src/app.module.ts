@@ -7,6 +7,8 @@ import { UsuarioModule } from './users/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { EstudianteModule } from './estudiante/estudiante.module';
 import { TutorModule } from './tutor/tutor.module';
+import { CoordinadorModule } from './coordinador/coordinador.module';
+import { MateriaModule } from './materia/materia.module';
 
 @Module({
   imports: [
@@ -26,7 +28,9 @@ import { TutorModule } from './tutor/tutor.module';
     UsuarioModule,
     AuthModule,
     EstudianteModule,
-    TutorModule, 
+    TutorModule,
+    CoordinadorModule,
+    MateriaModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
