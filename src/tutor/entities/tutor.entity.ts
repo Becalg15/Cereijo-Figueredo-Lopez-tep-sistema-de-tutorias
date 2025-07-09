@@ -32,5 +32,5 @@ export class Tutor {
 
   @ManyToOne(() => Materia, { nullable: true })
   @JoinColumn({ name: 'materia_id' })
-  materia?: Materia;
+  materia: Materia | null;
 }
