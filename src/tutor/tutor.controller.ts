@@ -9,12 +9,17 @@ import {
   Get,
   UseGuards,
   Patch,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TutorService } from './tutor.service';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UsuarioActual } from '../auth/decorators/user.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { AsignarMateriaDto } from './dto/asignar-materia.dto';
 
 @Controller('tutores')
 export class TutorController {
@@ -41,5 +46,16 @@ export class TutorController {
     @Body() dto: UpdateTutorDto,
   ) {
     return this.tutorService.actualizarPerfil(usuario.id, dto);
+  }
+
+  @Patch(':id/asignar-materia')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('coordinador')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async asignarMateria(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AsignarMateriaDto,
+  ) {
+    return this.tutorService.asignarMateria(id, dto);
   }
 }

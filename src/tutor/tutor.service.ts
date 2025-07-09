@@ -11,6 +11,7 @@ import { UpdateTutorDto } from './dto/update-tutor.dto';
 import * as bcrypt from 'bcryptjs';
 import { Usuario } from '../users/entities/usuario.entity';
 import { Materia } from '../materia/entities/materia.entity';
+import { AsignarMateriaDto } from './dto/asignar-materia.dto';
 
 @Injectable()
 export class TutorService {
@@ -94,4 +95,24 @@ export class TutorService {
     this.tutorRepo.merge(tutor, dto);
     return this.tutorRepo.save(tutor);
   }
+  
+  async asignarMateria(tutorId: number, dto: AsignarMateriaDto): Promise<Tutor> {
+  const tutor = await this.tutorRepo.findOne({
+    where: { id: tutorId },
+    relations: ['materia'],
+  });
+
+  if (!tutor) {
+    throw new NotFoundException('Tutor no encontrado');
+  }
+
+  const materia = await this.materiaRepo.findOne({ where: { id: dto.materia_id } });
+  if (!materia) {
+    throw new NotFoundException('Materia no encontrada');
+  }
+
+  tutor.materia = materia;
+  return this.tutorRepo.save(tutor);
+  }
+
 }
