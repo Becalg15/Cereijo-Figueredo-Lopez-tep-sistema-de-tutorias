@@ -15,6 +15,9 @@ import { CreateCoordinadorDto } from './dto/create-coordinador.dto';
 import { UpdateCoordinadorDto } from './dto/update-coordinador.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UsuarioActual } from '../auth/decorators/user.decorator';
+import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('coordinadores')
 export class CoordinadorController {
@@ -22,6 +25,8 @@ export class CoordinadorController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('coordinador')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async create(@Body() dto: CreateCoordinadorDto) {
     return this.coordinadorService.create(dto);

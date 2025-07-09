@@ -20,6 +20,9 @@ import { UsuarioActual } from '../auth/decorators/user.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { AsignarMateriaDto } from './dto/asignar-materia.dto';
+import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+
+
 
 @Controller('tutores')
 export class TutorController {
@@ -27,6 +30,8 @@ export class TutorController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('coordinador')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async create(@Body() dto: CreateTutorDto) {
     return this.tutorService.create(dto);
