@@ -11,9 +11,8 @@ export class LogService {
   ) {}
 
   /**
-   * Crea un nuevo registro de log en la base de datos.
-   * @param logData - Un objeto con los datos del log a crear.
-   * @returns La entidad de log guardada.
+   * @param logData 
+   * @returns 
    */
   async createLog(logData: Partial<Log>): Promise<Log> {
     const newLog = this.logRepository.create(logData);

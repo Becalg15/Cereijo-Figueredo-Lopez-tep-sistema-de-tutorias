@@ -13,8 +13,8 @@ export class Log {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'usuario_id', type: 'integer', nullable: false })
-  usuarioId: number;
+  @Column({ name: 'usuario_id', type: 'integer', nullable: true })
+  usuarioId: number | null;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   accion: string;
@@ -28,9 +28,7 @@ export class Log {
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date;
 
-  // Relación muchos a uno con la entidad Usuario
-  // Esto establece el vínculo de la clave foránea 'usuario_id'
-  @ManyToOne(() => Usuario, (usuario) => usuario.logs)
-  @JoinColumn({ name: 'usuario_id' }) // Especifica la columna de la clave foránea
+  @ManyToOne(() => Usuario, (usuario) => usuario.logs, { nullable: true })
+  @JoinColumn({ name: 'usuario_id' })
   usuario: Usuario;
 }
