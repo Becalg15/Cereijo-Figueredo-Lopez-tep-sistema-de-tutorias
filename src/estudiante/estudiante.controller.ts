@@ -8,12 +8,15 @@ import {
   HttpStatus,
   Get,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
+import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './entities/estudiante.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { UsuarioActual } from '../auth/decorators/user.decorator';
+
 
 @Controller('estudiantes')
 export class EstudianteController {
@@ -31,4 +34,13 @@ export class EstudianteController {
   async obtenerPerfil(@UsuarioActual() usuario: any) {
     return this.estudianteService.obtenerPerfil(usuario.id);
   }
+  @Patch('perfil')
+  @UseGuards(AuthGuard('jwt'))
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+    async actualizarPerfil(
+  @UsuarioActual() usuario: any,
+  @Body() dto: UpdateEstudianteDto,
+    ) {
+    return this.estudianteService.actualizarPerfil(usuario.id, dto);
+    }  
 }

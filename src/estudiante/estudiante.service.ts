@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Estudiante } from './entities/estudiante.entity';
 import { Repository } from 'typeorm';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
+import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import * as bcrypt from 'bcryptjs';
 import { Usuario } from '../users/entities/usuario.entity';
 import { InjectRepository as InjectUsuarioRepository } from '@nestjs/typeorm';
@@ -59,4 +60,12 @@ export class EstudianteService {
       usuario: usuarioSinClave,
     };
   }
+  async actualizarPerfil(usuarioId: number, dto: UpdateEstudianteDto) {
+  const estudiante = await this.estudianteRepo.findOneBy({ id: usuarioId });
+  if (!estudiante) throw new NotFoundException('Estudiante no encontrado');
+
+  // Actualizar datos del estudiante
+  this.estudianteRepo.merge(estudiante, dto);
+  return this.estudianteRepo.save(estudiante);
+}
 }
