@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import { Log } from '../../logging/entities/log.entity';
 
 @Entity('usuario')
 export class Usuario {
@@ -25,4 +28,7 @@ export class Usuario {
 
   @CreateDateColumn({ name: 'fecha_creacion' })
   fechaCreacion: Date;
+
+   @OneToMany(() => Log, (log) => log.usuario)
+  logs: Log[];
 }
