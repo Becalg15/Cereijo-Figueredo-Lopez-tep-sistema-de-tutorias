@@ -16,6 +16,10 @@ import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './entities/estudiante.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { UsuarioActual } from '../auth/decorators/user.decorator';
+import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+
 
 
 @Controller('estudiantes')
@@ -24,6 +28,8 @@ export class EstudianteController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('coordinador')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async create(@Body() dto: CreateEstudianteDto): Promise<Estudiante> {
     return this.estudianteService.create(dto);
