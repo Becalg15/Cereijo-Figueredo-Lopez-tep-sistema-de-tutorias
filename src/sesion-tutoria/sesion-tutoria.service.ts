@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan, LessThan } from 'typeorm';
+import { Repository, MoreThan, LessThan, MoreThanOrEqual } from 'typeorm';
 import { SesionTutoria, EstadoSesion } from './entities/sesion-tutoria.entity';
 import { CreateSesionTutoriaDto } from './dto/create-sesion-tutoria.dto';
 import { CompletarSesionDto } from './dto/completar-sesion.dto';
@@ -37,6 +37,7 @@ export class SesionTutoriaService {
       fecha: solicitud.fecha_deseada,
       hora: solicitud.hora_deseada,
       descripcion: solicitud.descripcion,
+      estado: EstadoSesion.AGENDADA,
     });
 
     return this.sesionRepo.save(sesion);
@@ -92,7 +93,7 @@ export class SesionTutoriaService {
       this.sesionRepo.find({
         where: {
           estudianteId,
-          fecha: MoreThan(hoy),
+          fecha: MoreThanOrEqual(hoy),
           estado: EstadoSesion.AGENDADA,
         },
         relations: ['tutor', 'tutor.usuario', 'materia'],
@@ -128,7 +129,7 @@ export class SesionTutoriaService {
       this.sesionRepo.find({
         where: {
           tutorId,
-          fecha: MoreThan(hoy),
+          fecha: MoreThanOrEqual(hoy),
           estado: EstadoSesion.AGENDADA,
         },
         relations: ['estudiante', 'estudiante.usuario', 'materia'],

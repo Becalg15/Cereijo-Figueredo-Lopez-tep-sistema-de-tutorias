@@ -59,7 +59,7 @@ export class SolicitudTutoriaService {
     const fechaDeseada = new Date(dto.fecha_deseada);
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-    
+
     if (fechaDeseada < hoy) {
       throw new BadRequestException('No se puede solicitar tutoría para fechas pasadas');
     }
@@ -71,6 +71,7 @@ export class SolicitudTutoriaService {
       fecha_deseada: fechaDeseada,
       hora_deseada: dto.hora_deseada,
       descripcion: dto.descripcion,
+      estado: EstadoSolicitud.PENDIENTE,
     });
 
     return this.solicitudRepo.save(solicitud);
@@ -114,12 +115,13 @@ export class SolicitudTutoriaService {
       throw new BadRequestException('Esta solicitud ya ha sido respondida');
     }
 
+    // Actualizar estado y comentario
     solicitud.estado = dto.estado;
     solicitud.comentario_tutor = dto.comentario_tutor;
 
     const solicitudActualizada = await this.solicitudRepo.save(solicitud);
 
-    // Si la solicitud fue aceptada, crear una sesión de tutoría
+    // Crear sesión automáticamente si aceptada
     if (dto.estado === EstadoSolicitud.ACEPTADA) {
       await this.sesionTutoriaService.createFromSolicitud(solicitud);
     }
