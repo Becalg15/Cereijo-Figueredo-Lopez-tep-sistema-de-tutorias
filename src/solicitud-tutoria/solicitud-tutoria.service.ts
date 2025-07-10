@@ -141,4 +141,20 @@ export class SolicitudTutoriaService {
 
     return solicitud;
   }
+
+  async findAll(estado?: EstadoSolicitud): Promise<SolicitudTutoria[]> {
+  const query = this.solicitudRepo.createQueryBuilder('solicitud')
+    .leftJoinAndSelect('solicitud.estudiante', 'estudiante')
+    .leftJoinAndSelect('estudiante.usuario', 'usuario_estudiante')
+    .leftJoinAndSelect('solicitud.tutor', 'tutor')
+    .leftJoinAndSelect('tutor.usuario', 'usuario_tutor')
+    .leftJoinAndSelect('solicitud.materia', 'materia')
+    .orderBy('solicitud.fechaCreacion', 'DESC');
+
+  if (estado) {
+    query.andWhere('solicitud.estado = :estado', { estado });
+  }
+
+  return query.getMany();
+}
 }

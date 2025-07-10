@@ -11,6 +11,7 @@ import { UpdateCoordinadorDto } from './dto/update-coordinador.dto';
 import * as bcrypt from 'bcryptjs';
 import { Usuario } from '../users/entities/usuario.entity';
 
+
 @Injectable()
 export class CoordinadorService {
   constructor(
