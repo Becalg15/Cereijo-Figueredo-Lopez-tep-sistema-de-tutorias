@@ -13,6 +13,7 @@ import { Tutor } from '../../tutor/entities/tutor.entity';
 import { Materia } from '../../materia/entities/materia.entity';
 import { SolicitudTutoria } from '../../solicitud-tutoria/entities/solicitud-tutoria.entity';
 
+
 export enum EstadoSesion {
   AGENDADA = 'agendada',
   COMPLETADA = 'completada',
@@ -82,4 +83,5 @@ export class SesionTutoria {
 
   @UpdateDateColumn({ name: 'fecha_actualizacion' })
   fechaActualizacion: Date;
+
 }

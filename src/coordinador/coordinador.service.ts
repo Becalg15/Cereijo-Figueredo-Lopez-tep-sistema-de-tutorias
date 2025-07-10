@@ -10,6 +10,9 @@ import { CreateCoordinadorDto } from './dto/create-coordinador.dto';
 import { UpdateCoordinadorDto } from './dto/update-coordinador.dto';
 import * as bcrypt from 'bcryptjs';
 import { Usuario } from '../users/entities/usuario.entity';
+import { SesionTutoria } from '../sesion-tutoria/entities/sesion-tutoria.entity';
+import { Tutor } from '../tutor/entities/tutor.entity';
+import { Materia } from '../materia/entities/materia.entity';
 
 @Injectable()
 export class CoordinadorService {
@@ -19,6 +22,9 @@ export class CoordinadorService {
 
     @InjectRepository(Usuario)
     private usuarioRepo: Repository<Usuario>,
+
+    @InjectRepository(SesionTutoria)
+    private sesionRepo: Repository<SesionTutoria>,
   ) {}
 
   async create(dto: CreateCoordinadorDto): Promise<Coordinador> {
@@ -75,4 +81,34 @@ export class CoordinadorService {
     this.coordinadorRepo.merge(coordinador, dto);
     return this.coordinadorRepo.save(coordinador);
   }
+
+  async sesionesPorTutor() {
+  const data = await this.sesionRepo
+    .createQueryBuilder('sesion')
+    .select('tutor.id', 'tutorId')
+    .addSelect('usuario.nombre', 'tutorNombre')
+    .addSelect('COUNT(*)', 'totalSesiones')
+    .innerJoin('sesion.tutor', 'tutor')
+    .innerJoin('tutor.usuario', 'usuario')
+    .groupBy('tutor.id')
+    .addGroupBy('usuario.nombre')
+    .getRawMany();
+
+  return data;
+}
+
+async sesionesPorMateria() {
+  const data = await this.sesionRepo
+    .createQueryBuilder('sesion')
+    .select('materia.id', 'materiaId')
+    .addSelect('materia.nombre', 'materiaNombre')
+    .addSelect('COUNT(*)', 'totalSesiones')
+    .innerJoin('sesion.materia', 'materia')
+    .groupBy('materia.id')
+    .addGroupBy('materia.nombre')
+    .getRawMany();
+
+  return data;
+}
+
 }
