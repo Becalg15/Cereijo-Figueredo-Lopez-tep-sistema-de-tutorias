@@ -35,6 +35,18 @@ export class CoordinadorController {
     return this.coordinadorService.create(dto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('coordinador')
+@Get('estadisticas/sesiones-por-tutor')
+async sesionesPorTutor() {
+  return this.coordinadorService.sesionesPorTutor();
+}
+
+@Get('estadisticas/sesiones-por-materia')
+async sesionesPorMateria() {
+  return this.coordinadorService.sesionesPorMateria();
+}
+
   @Get('perfil')
   @UseGuards(AuthGuard('jwt'))
   async obtenerPerfil(@UsuarioActual() usuario: any) {

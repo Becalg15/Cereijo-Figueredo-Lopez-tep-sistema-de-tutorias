@@ -5,9 +5,11 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Usuario } from '../../users/entities/usuario.entity';
 import { Materia } from '../../materia/entities/materia.entity';
+import { SesionTutoria } from '../../sesion-tutoria/entities/sesion-tutoria.entity';
 
 @Entity('tutor')
 export class Tutor {
@@ -33,4 +35,7 @@ export class Tutor {
   @ManyToOne(() => Materia, { nullable: true })
   @JoinColumn({ name: 'materia_id' })
   materia: Materia | null;
+
+  @OneToMany(() => SesionTutoria, (sesion) => sesion.tutor)
+sesiones: SesionTutoria[];
 }
